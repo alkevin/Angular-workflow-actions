@@ -48,7 +48,7 @@ jobs:
 
   sonar:
     runs-on: ubuntu-latest
-    needs: test
+    needs: setup
     name: SonarCloud Trigger
     steps:
     - uses: actions/checkout@master
@@ -71,7 +71,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Login to DockerHub Registry
-      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USER }} --password-stdin
     - name: push to heroku
       env :
         HEROKU_REGISTRY_URL: registry.heroku.com
