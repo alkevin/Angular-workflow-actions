@@ -40,7 +40,7 @@ jobs:
     - name: Build & test
       run: npm run build:ci
     - name: Fix for coverage path
-      run: sed -i 's/\/home\/runner\/work\/${{ github.repositorie }}\/${{ github.repositorie }}\//\/github\/workspace\//g' ./coverage/angular-workflow-actionslcov.info
+      run: sed -i 's/\/home\/runner\/work\/${{ github.repositorie }}\/${{ github.repositorie }}\//\/github\/workspace\//g' ./coverage/angular-workflow-actions/lcov.info
       working-directory: ./coverage
     - name: SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@master
