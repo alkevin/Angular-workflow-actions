@@ -52,6 +52,8 @@ jobs:
     name: SonarCloud Trigger
     steps:
     - uses: actions/checkout@master
+    - name: Install dependencies
+      run: npm ci --prefer-dist --no-progress --no-suggest --no-scripts
     - name: Build & test
       run: npm run build:ci
     - name: SonarCloud Scan
