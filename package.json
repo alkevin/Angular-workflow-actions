@@ -6,11 +6,11 @@
     "start": "ng serve",
     "build": "ng build",
     "build:prod": "ng build --prod",
-    "test": "ng test --watch=false --code-coverage",
+    "test": "ng test --watch=false --code-coverage --debug",
     "test:watch": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build:ci": "npm run test && npm run build:prod --debug"
+    "build:ci": "npm run test && npm run build:prod"
   },
   "private": true,
   "dependencies": {
