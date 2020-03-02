@@ -77,7 +77,7 @@ jobs:
         HEROKU_REGISTRY_URL: registry.heroku.com
         HEROKU_TOKEN : ${{ secrets.HEROKU_API_KEY }}
       run : |
-        echo $HEROKU_API_KEY | docker login --username=_ $HEROKU_REGISTRY_URL --password=
+        echo $HEROKU_API_KEY | docker login --username=_ $HEROKU_REGISTRY_URL --password-stdin
         export HEROKU_API_KEY=$HEROKU_TOKEN
         heroku container:login
         heroku container:push web --app ${{ secrets.HEROKU_APP_NAME }}
