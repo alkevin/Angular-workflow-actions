@@ -69,8 +69,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     steps:
-    - name: Install Docker
-      run: curl -sSL https://get.docker.com/ | sh
+    - uses: actions/docker/login@master
+      with: # Set the secret as an input
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWPORD: ${{ secrets.DOCKER_PASSWPORD }}
+      env: # Set the secret in the env
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWPORD: ${{ secrets.DOCKER_PASSWPORD }}
     - name: push to heroku
       env :
         HEROKU_REGISTRY_URL: registry.heroku.com
