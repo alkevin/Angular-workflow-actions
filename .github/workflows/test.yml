@@ -70,13 +70,8 @@ jobs:
     needs: test
     steps:
     - uses: actions/checkout@master
-    - uses: actions/docker/login@master
-      with: # Set the secret as an input
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWPORD: ${{ secrets.DOCKER_PASSWPORD }}
-      env: # Set the secret in the env
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWPORD: ${{ secrets.DOCKER_PASSWPORD }}
+    - name: Login to DockerHub Registry
+      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
     - name: push to heroku
       env :
         HEROKU_REGISTRY_URL: registry.heroku.com
