@@ -12,6 +12,7 @@ COPY . .
 ## Build the angular app in production mode and store the artifacts in dist folder
 RUN npm run ng build -- --prod --output-path=dist
 RUN ls -la .
+RUN ls -la dist
 ### STAGE 2: Setup ###
 FROM nginx:1.17.1-alpine
 
@@ -20,7 +21,7 @@ COPY nginx/default.conf.template /etc/nginx/conf.d/default.conf.template
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 
 ## Remove default nginx website
-RUN rm -rf /usr/share/nginx/html/*
+#RUN rm -rf /usr/share/nginx/html/*
 
 ## From ‘builder’ stage copy over the artifacts in dist folder to default nginx public folder
 COPY --from=builder /ng-app/dist /usr/share/nginx/html
