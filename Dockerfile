@@ -28,7 +28,7 @@ FROM nginx:1.17.1-alpine
 ## Copy our default nginx config
 #COPY .nginx/default.conf.template /etc/nginx/conf.d/default.conf.template
 #COPY .nginx/nginx.conf /etc/nginx/nginx.conf
-COPY nginx/default.conf /etc/nginx/conf.d/
+COPY .nginx/default.conf /etc/nginx/conf.d/
 
 ## From ‘builder’ stage copy over the artifacts in dist folder to default nginx public folder
 COPY --from=builder /app/dist /usr/share/nginx/html
