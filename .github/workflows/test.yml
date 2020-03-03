@@ -95,7 +95,7 @@ jobs:
         echo $HEROKU_TOKEN | docker login --username=_ $HEROKU_REGISTRY_URL --password-stdin
         export HEROKU_API_KEY=$HEROKU_TOKEN
         heroku container:login
-        heroku logs
+        heroku logs --app ${{ secrets.HEROKU_APP_NAME }}
         heroku container:push web --app ${{ secrets.HEROKU_APP_NAME }}
         heroku container:release web --app ${{ secrets.HEROKU_APP_NAME }}
         heroku ps:scale web=1 --app ${{ secrets.HEROKU_APP_NAME }}
@@ -115,6 +115,6 @@ jobs:
         echo $HEROKU_TOKEN | docker login --username=_ $HEROKU_REGISTRY_URL --password-stdin
         export HEROKU_API_KEY=$HEROKU_TOKEN
         heroku container:login
-        heroku logs --tail
+        heroku logs --tail --app ${{ secrets.HEROKU_APP_NAME }}
 
 
