@@ -1,24 +1,33 @@
 ### STAGE 1: Build ###
 
 # We label our stage as builder
-FROM node:13.3.0 AS builder
-COPY package.json package-lock.json ./
+FROM node:10.16.3 AS builder
 
-## Storing node modules on a separate layer will prevent unnecessary npm installs at each build
-RUN npm ci && mkdir /ng-app && mv ./node_modules ./ng-app
-WORKDIR /ng-app
+# set working directory
+WORKDIR /app
+
+# add `/app/node_modules/.bin` to $PATH
+ENV PATH /app/node_modules/.bin:$PATH
+
+COPY package.json package.json
+COPY package-lock.json package-lock.json
+
+# install and cache app dependencies
+COPY package.json /app/package.json
+RUN npm install -g @angular/cli@9.0.2
+RUN npm ci  --debug
+
+## Build the angular app in production
 COPY . .
-
-## Build the angular app in production mode and store the artifacts in dist folder
-RUN npm run ng build -- --prod --output-path=dist
+RUN ng build --prod
 RUN ls -la .
 
 ### STAGE 2: Setup ###
 FROM nginx:1.17.1-alpine
 
 ## Copy our default nginx config
-#COPY .nginx/default.conf.template /etc/nginx/conf.d/default.conf.template
-COPY .nginx/default.conf /etc/nginx/conf.d/
+COPY .nginx/default.conf.template /etc/nginx/conf.d/default.conf.template
+COPY .nginx/nginx.conf /etc/nginx/nginx.conf
 
 ## Remove default nginx website
 RUN rm -rf /usr/share/nginx/html/*
