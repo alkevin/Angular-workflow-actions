@@ -40,6 +40,8 @@ jobs:
       run: npm ci --prefer-dist --no-progress --no-suggest --no-scripts
     - name: Build & test
       run: npm run build:ci
+    - name: Look in VM
+      run: ls -la .
     - name: Archive code coverage results
       uses: actions/upload-artifact@v1
       with:
@@ -57,6 +59,8 @@ jobs:
       with:
         name: code-coverage-report
         path: coverage
+    - name: Look in VM
+      run: ls -la .
     - name: SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@master
       with:
