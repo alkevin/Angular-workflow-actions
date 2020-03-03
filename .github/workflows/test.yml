@@ -69,20 +69,20 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  hadolint:
-    name: Test Dockerfile
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout Source
-      uses: actions/checkout@v2
-    - name: Install Docker
-      run: curl -sSL https://get.docker.com/ | sh
-    - name: Run hadolint
-      run: docker run --rm -i hadolint/hadolint < Dockerfile
+  #hadolint:
+  #  name: Test Dockerfile
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #  - name: Checkout Source
+  #    uses: actions/checkout@v2
+  #  - name: Install Docker
+  #    run: curl -sSL https://get.docker.com/ | sh
+  #  - name: Run hadolint
+  #    run: docker run --rm -i hadolint/hadolint < Dockerfile
 
   heroku:
     runs-on: ubuntu-latest
-    needs: [setup, hadolint]
+    needs: [setup]
     steps:
     - uses: actions/checkout@master
     - name: Login to DockerHub Registry
@@ -99,22 +99,5 @@ jobs:
         heroku container:push web --app ${{ secrets.HEROKU_APP_NAME }}
         heroku container:release web --app ${{ secrets.HEROKU_APP_NAME }}
         heroku ps:scale web=1 --app ${{ secrets.HEROKU_APP_NAME }}
-
-  heroku-log:
-    runs-on: ubuntu-latest
-    needs: [setup, hadolint]
-    steps:
-    - uses: actions/checkout@master
-    - name: Login to DockerHub Registry
-      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USER }} --password-stdin
-    - name: push to heroku
-      env :
-        HEROKU_REGISTRY_URL: registry.heroku.com
-        HEROKU_TOKEN : ${{ secrets.HEROKU_API_KEY }}
-      run : |
-        echo $HEROKU_TOKEN | docker login --username=_ $HEROKU_REGISTRY_URL --password-stdin
-        export HEROKU_API_KEY=$HEROKU_TOKEN
-        heroku container:login
-        heroku logs --tail --app ${{ secrets.HEROKU_APP_NAME }}
 
 
