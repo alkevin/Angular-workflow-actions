@@ -75,9 +75,9 @@ jobs:
     steps:
     - name: Checkout Source
       uses: actions/checkout@v2
-    - name: Install Dockder
+    - name: Install Docker
       run: curl -sSL https://get.docker.com/ | sh
-    - name: Install hadolint
+    - name: Run hadolint
       run: docker run --rm -i hadolint/hadolint < Dockerfile
 
   heroku:
@@ -98,3 +98,5 @@ jobs:
         heroku container:push web --app ${{ secrets.HEROKU_APP_NAME }}
         heroku container:release web --app ${{ secrets.HEROKU_APP_NAME }}
         heroku ps:scale web=1 --app ${{ secrets.HEROKU_APP_NAME }}
+
+
