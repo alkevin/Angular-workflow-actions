@@ -4,18 +4,17 @@
 FROM node:10.16.3 AS builder
 
 # set working directory
-WORKDIR /app
-
-# add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
+WORKDIR /opt/ng
 
 COPY package.json package.json
 COPY package-lock.json package-lock.json
 
 # install and cache app dependencies
-COPY package.json /app/package.json
 RUN npm install -g @angular/cli@9.0.2
-RUN npm ci  --debug
+RUN npm ci
+
+# add `/app/node_modules/.bin` to $PATH
+ENV PATH /opt/ng/node_modules/.bin:$PATH
 
 ## Build the angular app in production
 COPY . .
@@ -28,10 +27,13 @@ FROM nginx:1.17.1-alpine
 ## Copy our default nginx config
 #COPY .nginx/default.conf.template /etc/nginx/conf.d/default.conf.template
 #COPY .nginx/nginx.conf /etc/nginx/nginx.conf
-COPY .nginx/default.conf /etc/nginx/conf.d/
+#COPY .nginx/default.conf /etc/nginx/conf.d/
+
+## Copy from the nginx base image
+COPY docker/nginx/default.conf /etc/nginx/conf.d/default.conf
 
 ## From ‘builder’ stage copy over the artifacts in dist folder to default nginx public folder
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /opt/ng/dist/angular-workflow-actions /usr/share/nginx/html
 
 #CMD /bin/bash -c "envsubst '\$PORT' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf" && nginx -g 'daemon off;'
 
