@@ -69,9 +69,20 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+  hadolint:
+    name: Test Dockerfile
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Source
+      uses: actions/checkout@v2
+    - name: Install Dockder
+      run: curl -sSL https://get.docker.com/ | sh
+    - name: Install hadolint
+      run: docker run --rm -i hadolint/hadolint < Dockerfile
+
   heroku:
     runs-on: ubuntu-latest
-    needs: setup
+    needs: [setup, hadolint]
     steps:
     - uses: actions/checkout@master
     - name: Login to DockerHub Registry
