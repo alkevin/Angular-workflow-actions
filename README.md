@@ -15,6 +15,18 @@ docker build -t angular-test .
 docker run -it --env PORT=8081 -p 8081:8081 -v ${PWD}:/app angular-test
 ```
 
+## OR PULL FROM REGISTRY
+
+* on root project run :
+```bash
+docker pull docker.pkg.github.com/alkevin/angular-workflow-actions/angular-test:latest
+```
+* then : 
+
+```bash
+docker run -it --env PORT=8081 -p 8081:8081 -v ${PWD}:/app angular-test
+```
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
