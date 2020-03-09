@@ -122,5 +122,4 @@ jobs:
         ANGULAR_ID=docker.pkg.github.com/${{ github.repository }}/angular-test
         docker push $ANGULAR_ID:${{steps.vars.outputs.tag}}
         docker push $ANGULAR_ID:latest
-
-
+        
