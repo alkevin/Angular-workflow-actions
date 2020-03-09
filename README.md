@@ -3,6 +3,18 @@ Project to test how to use github actions with angular 9
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.2.
 
+## HOW TO USE
+
+* on root project run :
+```bash
+docker build -t angular-test .
+```
+* then : 
+
+```bash
+docker run -it --env PORT=8081 -p 8081:8081 -v ${PWD}:/app angular-test
+```
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
